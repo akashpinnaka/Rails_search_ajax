@@ -1,0 +1,41 @@
+<%= form_tag(root_path, method: :get) do %>
+  <%= text_field_tag :title %>
+<% end %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+
+  $(document).ready(function() {
+    $('#title').on('keyup', function() {
+      $('ul#posts-container').hide();
+      $('ul#posts-container').html('');
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/",
+        data: "query=" + $('#title').val(),
+        success: function(response) {
+          //alert(response.posts[0].title);
+          for(var i = 0; i < response.posts.length; i++) {
+            $('ul#posts-container').append(
+              '<li>' + response.posts[i].title + '</li>'
+            );
+          }
+          $('ul#posts-container').fadeIn();
+        }
+      });
+    });
+  });
+
+</script>
+
+
+<br><br><br>
+
+
+<div id="posts">
+  <ul id="posts-container">
+    
+  </ul>
+</div>
